@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\legnext\\youchuan_docs/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

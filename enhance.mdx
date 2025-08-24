@@ -1,0 +1,212 @@
+---
+title: "Enhance"
+description: "Enhance image quality and details with AI enhancement"
+---
+
+# Enhance
+
+Enhance the overall quality, clarity, and detail of existing generated images using advanced AI enhancement algorithms.
+
+## Endpoint
+
+```
+POST /v1/tob/enhance
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | ID of the original image generation task |
+| `imageNo` | integer | Yes | Image number to enhance (0/1/2/3) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Example Request
+
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "callback": "https://your-domain.com/webhook"
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "urls": [],
+  "cost": {
+    "feeCost": 60,
+    "relaxCost": 0
+  }
+}
+```
+
+## Enhancement Features
+
+### Quality Improvements
+- **Sharpness**: Enhanced edge definition and clarity
+- **Detail Recovery**: Restoration of fine details and textures
+- **Noise Reduction**: Reduction of visual artifacts and noise
+- **Color Enhancement**: Improved color accuracy and vibrancy
+
+### Technical Enhancements
+- **Contrast Optimization**: Better dynamic range and contrast
+- **Clarity Boost**: Overall image clarity and definition
+- **Artifact Removal**: Elimination of generation artifacts
+- **Fine Detail Enhancement**: Improved rendering of small details
+
+## Use Cases
+
+### Photography Enhancement
+```json
+{
+  "jobId": "job_portrait",
+  "imageNo": 0
+}
+```
+*Enhance portrait details, skin texture, and overall clarity*
+
+### Landscape Improvement
+```json
+{
+  "jobId": "job_landscape",
+  "imageNo": 0
+}
+```
+*Improve natural details, foliage definition, and atmospheric clarity*
+
+### Architectural Enhancement
+```json
+{
+  "jobId": "job_building",
+  "imageNo": 0
+}
+```
+*Sharpen structural details, improve material textures, and enhance lighting*
+
+### Artistic Refinement
+```json
+{
+  "jobId": "job_artwork",
+  "imageNo": 0
+}
+```
+*Enhance artistic details, improve brush stroke definition, and boost visual impact*
+
+## Status Codes
+
+| Code | Description |
+|------|-------------|
+| 200 | Success |
+| 400 | Invalid request parameters |
+| 401 | Unauthorized access |
+| 500 | Internal server error |
+
+## Enhancement vs. Upscale
+
+### Enhancement
+- **Focus**: Quality improvement at current resolution
+- **Benefits**: Better clarity, detail, and overall quality
+- **Use When**: Image quality needs improvement without resolution change
+- **Processing**: Optimizes existing pixel information
+
+### Upscale  
+- **Focus**: Resolution increase with quality improvement
+- **Benefits**: Larger size with enhanced detail
+- **Use When**: Higher resolution output is needed
+- **Processing**: Increases pixel count and enhances details
+
+## Workflow Integration
+
+### Quality Improvement Pipeline
+1. Generate initial image
+2. Apply any necessary edits (remix, inpaint, etc.)
+3. Enhance for improved quality
+4. Optional: Upscale for higher resolution
+
+### Professional Workflow
+```bash
+# Generate base image
+POST /v1/tob/diffusion
+
+# Apply enhancements for quality
+POST /v1/tob/enhance {"jobId": "base_job", "imageNo": 0}
+
+# Final upscale for print resolution
+POST /v1/tob/upscale {"jobId": "enhanced_job", "imageNo": 0, "type": 0}
+```
+
+## Best Results Tips
+
+1. **Image Quality**: Works best with reasonably good source images
+2. **Content Type**: Particularly effective for:
+   - Portraits and faces
+   - Natural landscapes
+   - Architectural details
+   - Fine art and illustrations
+
+3. **Processing Order**: 
+   - Apply edits first (remix, inpaint)
+   - Then enhance quality
+   - Finally upscale if needed
+
+## Common Applications
+
+### Portrait Enhancement
+- Improve skin texture and detail
+- Enhance eye clarity and definition
+- Sharpen hair and fabric details
+- Boost overall photographic quality
+
+### Product Photography
+- Enhance material textures
+- Improve product detail definition
+- Boost color accuracy
+- Reduce visual artifacts
+
+### Artistic Work
+- Sharpen brush stroke details
+- Enhance color depth and richness
+- Improve overall visual impact
+- Refine artistic elements
+
+### Architecture & Design
+- Sharpen structural details
+- Enhance material appearances
+- Improve lighting and shadows
+- Clarify design elements
+
+## Performance Notes
+
+- **Processing Time**: Generally faster than upscaling operations
+- **Quality Gains**: Noticeable improvement in most images
+- **Resource Usage**: Moderate computational requirements
+- **Cost Efficiency**: Good value for quality improvement
+
+## Limitations
+
+- **Source Quality**: Results depend on original image quality
+- **Enhancement Limits**: Cannot fix fundamental composition issues
+- **Artifact Sensitivity**: May emphasize existing artifacts in poor quality images
+- **Style Dependency**: Works better with certain artistic styles
+
+## Notes
+
+- Enhancement is typically applied before upscaling for optimal results
+- Works well as a quality improvement step in professional workflows
+- Particularly effective for images that will be viewed at original resolution
+- Can be combined with other operations for comprehensive image improvement
+- Processing preserves original resolution while improving quality

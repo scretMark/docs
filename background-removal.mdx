@@ -1,0 +1,112 @@
+---
+title: "Background Removal"
+description: "Remove backgrounds from images automatically"
+---
+
+# Background Removal
+
+Automatically remove backgrounds from any image, creating clean cutouts with transparent backgrounds.
+
+## Endpoint
+
+```
+POST /v1/tob/remove-background
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `imgUrl` | string | Yes | URL of the image to process (max length: 1024 characters) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Example Request
+
+```json
+{
+  "imgUrl": "https://example.com/images/portrait.jpg",
+  "callback": "https://your-domain.com/webhook"
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "urls": [],
+  "cost": {
+    "feeCost": 50,
+    "relaxCost": 0
+  }
+}
+```
+
+## Supported Image Formats
+
+- **Input**: JPEG, PNG, WebP
+- **Output**: PNG with transparent background
+- **Maximum URL Length**: 1024 characters
+
+## Use Cases
+
+- **Product Photography**: Create clean product images for e-commerce
+- **Portrait Editing**: Remove distracting backgrounds from photos
+- **Graphic Design**: Prepare images for composite designs
+- **Marketing Materials**: Create cutout images for advertisements
+- **Social Media**: Prepare images for profile pictures or posts
+
+## Processing Details
+
+1. **AI Detection**: Advanced AI identifies the main subject in the image
+2. **Edge Refinement**: Precise edge detection preserves fine details like hair and fur
+3. **Transparent Output**: Background is replaced with transparency
+4. **Quality Preservation**: Subject quality is maintained during processing
+
+## Best Practices
+
+- **High Contrast**: Images with clear subject-background separation work best
+- **Good Lighting**: Well-lit subjects produce better results
+- **Centered Subjects**: Main subjects positioned centrally are detected more accurately
+- **Avoid Complex Backgrounds**: Simple backgrounds are easier to remove cleanly
+
+## Common Applications
+
+### E-commerce
+```json
+{
+  "imgUrl": "https://store.com/product-photo.jpg"
+}
+```
+
+### Portrait Processing
+```json
+{
+  "imgUrl": "https://photos.com/headshot.png"
+}
+```
+
+### Logo/Icon Creation
+```json
+{
+  "imgUrl": "https://assets.com/logo-with-bg.jpg"
+}
+```
+
+## Notes
+
+- Processing time is typically faster than other image operations
+- Works best with clear subject-background distinction
+- Fine details like hair, fur, and transparent objects are handled intelligently
+- The original image proportions and subject positioning are preserved
+- No additional prompts or parameters are needed - the AI automatically detects the main subject

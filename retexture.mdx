@@ -1,0 +1,169 @@
+---
+title: "Retexture"
+description: "Transform image textures and materials with AI"
+---
+
+# Retexture
+
+Transform the textures and materials of any image using AI-powered style transfer and material transformation.
+
+## Endpoint
+
+```
+POST /v1/tob/retexture
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `imgUrl` | string | Yes | URL of the source image (max length: 1024 characters) |
+| `remixPrompt` | string | Yes | Text description of desired texture/material transformation |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Example Requests
+
+### Material Transformation
+```json
+{
+  "imgUrl": "https://example.com/wooden-chair.jpg",
+  "remixPrompt": "Transform the wood material to polished chrome metal"
+}
+```
+
+### Texture Style Change
+```json
+{
+  "imgUrl": "https://example.com/building.jpg", 
+  "remixPrompt": "Change the brick texture to smooth marble with gold veining"
+}
+```
+
+### Artistic Style Transfer
+```json
+{
+  "imgUrl": "https://example.com/landscape.jpg",
+  "remixPrompt": "Apply oil painting texture with thick brushstrokes"
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "text": "Transform the wood material to polished chrome metal",
+  "urls": [],
+  "cost": {
+    "feeCost": 110,
+    "relaxCost": 0
+  }
+}
+```
+
+## Supported Transformations
+
+### Material Changes
+- **Wood → Metal**: Transform wooden surfaces to metal finishes
+- **Fabric → Leather**: Change textile materials to leather
+- **Stone → Glass**: Convert stone textures to glass or crystal
+- **Plastic → Ceramic**: Transform synthetic to natural materials
+
+### Surface Textures
+- **Smooth → Rough**: Add texture detail to smooth surfaces
+- **Matte → Glossy**: Change surface reflection properties
+- **New → Aged**: Add weathering and age effects
+- **Clean → Distressed**: Apply wear and damage effects
+
+### Artistic Styles
+- **Photorealistic → Painted**: Apply painting techniques
+- **Modern → Vintage**: Add retro styling and effects
+- **Natural → Synthetic**: Transform organic to artificial appearance
+
+## Model Compatibility
+
+- **Supported Models**: v6.1 and above
+- **Optimal Results**: Works best with clear, well-lit images
+- **Resolution**: Maintains original image dimensions
+
+## Use Cases
+
+### Product Design
+```json
+{
+  "imgUrl": "https://products.com/prototype.jpg",
+  "remixPrompt": "Change plastic casing to brushed aluminum finish"
+}
+```
+
+### Architecture Visualization
+```json
+{
+  "imgUrl": "https://buildings.com/facade.jpg",
+  "remixPrompt": "Replace concrete with natural stone texture"
+}
+```
+
+### Artistic Creation
+```json
+{
+  "imgUrl": "https://photos.com/portrait.jpg",
+  "remixPrompt": "Apply impressionist painting style with visible brushwork"
+}
+```
+
+### Fashion and Textiles
+```json
+{
+  "imgUrl": "https://fashion.com/garment.jpg",
+  "remixPrompt": "Transform cotton fabric to silk with subtle sheen"
+}
+```
+
+## Best Practices
+
+1. **Specific Descriptions**: Use detailed material and texture descriptions
+2. **Reference Real Materials**: Mention specific materials (marble, oak, steel, velvet)
+3. **Include Finish Details**: Specify surface properties (matte, glossy, brushed, polished)
+4. **Consider Lighting**: Account for how materials interact with existing lighting
+
+## Advanced Prompting
+
+### Detailed Material Specification
+```json
+{
+  "remixPrompt": "Transform to weathered copper with green patina and subtle scratches"
+}
+```
+
+### Multiple Material Changes
+```json
+{
+  "remixPrompt": "Change wood to dark walnut, metal parts to brass, fabric to burgundy velvet"
+}
+```
+
+### Style and Era Specification
+```json
+{
+  "remixPrompt": "Apply 1970s retro styling with orange and brown color scheme, textured surfaces"
+}
+```
+
+## Notes
+
+- **Structure Preservation**: The overall shape and composition remain intact
+- **Lighting Consistency**: AI maintains realistic lighting interactions with new materials
+- **Detail Retention**: Fine details are preserved during texture transformation
+- **Quality Output**: Results maintain the resolution and quality of the input image
+- **Processing Time**: Complex transformations may require additional processing time

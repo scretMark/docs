@@ -1,0 +1,236 @@
+---
+title: "Variation"
+description: "Create variations of existing images with controllable intensity"
+---
+
+# Variation
+
+Generate variations of existing images with controllable transformation intensity while maintaining the original composition structure.
+
+## Endpoint
+
+```
+POST /v1/tob/variation
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | ID of the original image generation task |
+| `imageNo` | integer | Yes | Image number to vary (0/1/2/3) |
+| `type` | integer | Yes | Variation intensity type (0 or 1) |
+| `remixPrompt` | string | No | Additional prompt for guided variation (1-8192 characters) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Variation Types
+
+| Type | Name | Description |
+|------|------|-------------|
+| 0 | Subtle | Minor changes while preserving most original elements |
+| 1 | Strong | More dramatic variations with significant changes |
+
+## Example Requests
+
+### Subtle Variation
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "type": 0
+}
+```
+
+### Strong Variation
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "type": 1
+}
+```
+
+### Guided Variation
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "type": 0,
+  "remixPrompt": "Add more colorful flowers in the garden"
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "text": "Add more colorful flowers in the garden",
+  "urls": [],
+  "cost": {
+    "feeCost": 90,
+    "relaxCost": 0
+  }
+}
+```
+
+## Variation Intensity Comparison
+
+### Subtle (Type 0)
+- **Changes**: Minor adjustments to colors, lighting, small details
+- **Preservation**: Maintains overall composition, main subjects, and style
+- **Use Cases**: 
+  - Fine-tuning existing results
+  - Creating slight variations for A/B testing
+  - Adjusting minor aesthetic elements
+- **Example Changes**:
+  - Different lighting conditions
+  - Slight color palette shifts
+  - Minor detail modifications
+  - Small compositional adjustments
+
+### Strong (Type 1)
+- **Changes**: Significant modifications to composition, style, and elements
+- **Preservation**: Keeps general theme but allows major alterations
+- **Use Cases**:
+  - Creating dramatically different versions
+  - Exploring alternative compositions
+  - Major style or mood changes
+- **Example Changes**:
+  - Different artistic styles
+  - Alternative compositions
+  - Major color scheme changes
+  - Significant detail modifications
+
+## Status Codes
+
+| Code | Description |
+|------|-------------|
+| 200 | Success |
+| 405 | Variation not supported for this image type (e.g., advanced edit/retexture results) |
+
+## Use Cases by Type
+
+### Subtle Variations
+
+#### Color Adjustments
+```json
+{
+  "jobId": "job_landscape",
+  "imageNo": 0,
+  "type": 0,
+  "remixPrompt": "Enhance the autumn colors with warmer tones"
+}
+```
+
+#### Lighting Changes
+```json
+{
+  "jobId": "job_portrait",
+  "imageNo": 0, 
+  "type": 0,
+  "remixPrompt": "Softer, more diffused lighting"
+}
+```
+
+### Strong Variations
+
+#### Style Changes
+```json
+{
+  "jobId": "job_artwork",
+  "imageNo": 0,
+  "type": 1,
+  "remixPrompt": "Transform to impressionist painting style"
+}
+```
+
+#### Composition Alternatives
+```json
+{
+  "jobId": "job_scene",
+  "imageNo": 0,
+  "type": 1,
+  "remixPrompt": "Different camera angle and perspective"
+}
+```
+
+## Workflow Integration
+
+### Creative Exploration
+1. Generate base image
+2. Create subtle variations for fine-tuning
+3. Create strong variations for alternatives
+4. Compare results and select best options
+
+### A/B Testing
+1. Create multiple subtle variations
+2. Test different versions with audiences
+3. Iterate based on feedback
+
+### Style Development
+1. Start with strong variations to explore directions
+2. Use subtle variations to refine chosen direction
+3. Create final polished versions
+
+## Best Practices
+
+1. **Start Simple**: Begin with subtle variations before trying strong ones
+2. **Use Prompts Wisely**: Remix prompts help guide variations in desired directions
+3. **Compare Results**: Generate multiple variations to compare options
+4. **Iterative Process**: Use variations of variations for progressive refinement
+
+## Limitations
+
+- **Model Compatibility**: Not supported for all image types (advanced edit, retexture)
+- **Unpredictability**: Results may vary more than expected, especially with strong type
+- **Original Dependency**: Quality depends on the original image quality
+- **Processing Time**: Strong variations may take longer to process
+
+## Advanced Techniques
+
+### Progressive Variation
+```bash
+# Original image
+job_original
+
+# Subtle refinement
+POST /variation {"jobId": "job_original", "type": 0}
+# Result: job_subtle
+
+# Strong alternative  
+POST /variation {"jobId": "job_original", "type": 1}
+# Result: job_strong
+
+# Refine the strong version
+POST /variation {"jobId": "job_strong", "type": 0}
+# Result: job_refined
+```
+
+### Guided Exploration
+```json
+{
+  "jobId": "job_base",
+  "imageNo": 0,
+  "type": 1,
+  "remixPrompt": "Focus on architectural details with dramatic lighting"
+}
+```
+
+## Notes
+
+- Variations maintain a connection to the source image while allowing creative exploration
+- The remix prompt is optional but helpful for directing the variation
+- Multiple variations of the same image can produce diverse results
+- Strong variations offer more creative freedom but less predictability
+- Subtle variations are ideal for fine-tuning and professional applications

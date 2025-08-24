@@ -1,0 +1,125 @@
+---
+title: "Reroll"
+description: "Re-execute tasks to generate new variations"
+---
+
+# Reroll
+
+Re-execute an existing image generation task to create new variations using the same prompt and parameters.
+
+## Endpoint
+
+```
+POST /v1/tob/reroll
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | ID of the original task to reroll |
+
+## Example Request
+
+```json
+{
+  "jobId": "job_12345"
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the new task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "text": "A beautiful sunset over mountains with vibrant colors",
+  "urls": [],
+  "cost": {
+    "feeCost": 100,
+    "relaxCost": 0
+  }
+}
+```
+
+## How It Works
+
+1. **Original Parameters**: The system retrieves all parameters from the original job
+2. **New Seed**: A new random seed is generated for variation
+3. **Same Prompt**: The exact same text prompt is used
+4. **Fresh Generation**: The AI creates entirely new images based on the original parameters
+
+## Use Cases
+
+### Creative Exploration
+- Generate multiple interpretations of the same concept
+- Explore different compositions with identical prompts
+- Find the best version among several attempts
+
+### Quality Improvement
+- Try again if the original results were unsatisfactory
+- Get additional options for client presentations
+- Overcome temporary AI model inconsistencies
+
+### Batch Creation
+- Create series of related images for projects
+- Generate multiple versions for A/B testing
+- Build image collections with consistent themes
+
+## Example Workflows
+
+### Simple Reroll
+```bash
+# Original generation
+POST /v1/tob/diffusion
+{
+  "text": "Modern office interior with natural lighting"
+}
+# Response: {"id": "job_12345", ...}
+
+# Reroll for variations
+POST /v1/tob/reroll
+{
+  "jobId": "job_12345"
+}
+# Response: {"id": "job_67890", ...}
+```
+
+### Multiple Rerolls
+```bash
+# Generate several variations
+POST /v1/tob/reroll {"jobId": "job_12345"}  # Variation 1
+POST /v1/tob/reroll {"jobId": "job_12345"}  # Variation 2
+POST /v1/tob/reroll {"jobId": "job_12345"}  # Variation 3
+```
+
+## Important Notes
+
+- **Identical Parameters**: All original settings (model, aspect ratio, etc.) are preserved
+- **New Random Seed**: Each reroll uses a different seed for variation
+- **Independent Jobs**: Each reroll creates a separate job with its own ID
+- **Cost Accumulation**: Each reroll consumes credits as a new generation task
+- **Original Unchanged**: The original job and its results remain unaffected
+
+## Best Practices
+
+1. **Review Original**: Ensure the original prompt and parameters are what you want before rerolling
+2. **Budget Consideration**: Multiple rerolls will consume additional credits
+3. **Comparison**: Keep track of job IDs to compare results
+4. **Timing**: Allow sufficient time between rerolls to avoid rate limiting
+
+## Limitations
+
+- Cannot modify the original prompt or parameters (use remix for prompt changes)
+- Each reroll is billed as a separate generation task
+- No guarantee that rerolled results will be better than the original
+- Some variability is inherent to AI generation, even with identical inputs

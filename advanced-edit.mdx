@@ -1,0 +1,208 @@
+---
+title: "Advanced Edit"
+description: "Advanced image editing with custom masks and canvas positioning"
+---
+
+# Advanced Edit
+
+Perform advanced image editing operations using custom uploaded images with precise mask control and canvas positioning.
+
+## Endpoint
+
+```
+POST /v1/tob/upload-paint
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `imgUrl` | string | Yes | URL of the source image (max length: 1024 characters) |
+| `canvas` | [Canvas](#canvas) | Yes | Target canvas dimensions |
+| `imgPos` | [CanvasImg](#canvasimg) | Yes | Image position and size on canvas |
+| `remixPrompt` | string | Yes | Text prompt for the editing operation |
+| `mask` | [Mask](#mask) | Yes | Areas to edit on the original image |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Data Types
+
+### Canvas
+| Field | Type | Description |
+|-------|------|-------------|
+| `width` | integer | Canvas width in pixels |
+| `height` | integer | Canvas height in pixels |
+
+### CanvasImg
+| Field | Type | Description |
+|-------|------|-------------|
+| `width` | integer | Image width in pixels |
+| `height` | integer | Image height in pixels |
+| `x` | integer | Horizontal offset from canvas top-left |
+| `y` | integer | Vertical offset from canvas top-left |
+
+### Mask
+| Field | Type | Description |
+|-------|------|-------------|
+| `areas` | [Polygon](#polygon)[] | Polygonal areas to edit (optional) |
+| `url` | string | Black and white mask image URL (optional) |
+
+### Polygon
+| Field | Type | Description |
+|-------|------|-------------|
+| `width` | integer | Image width in pixels (500-4096) |
+| `height` | integer | Image height in pixels (500-4096) |
+| `points` | integer[] | Polygon coordinates in XYXY format, clockwise from top-left |
+
+## Example Request
+
+```json
+{
+  "imgUrl": "https://example.com/source-image.jpg",
+  "remixPrompt": "Add a futuristic holographic interface overlay",
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
+  "imgPos": {
+    "width": 1024,
+    "height": 1024,
+    "x": 448,
+    "y": 28
+  },
+  "mask": {
+    "areas": [
+      {
+        "width": 1024,
+        "height": 1024,
+        "points": [300, 300, 700, 300, 700, 700, 300, 700]
+      }
+    ]
+  }
+}
+```
+
+## Advanced Use Cases
+
+### Composite Creation
+```json
+{
+  "imgUrl": "https://photos.com/person.jpg",
+  "remixPrompt": "Place person in a cyberpunk cityscape background",
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
+  "imgPos": {
+    "width": 800,
+    "height": 1080,
+    "x": 560,
+    "y": 0
+  },
+  "mask": {
+    "url": "https://masks.com/person-silhouette.png"
+  }
+}
+```
+
+### Precise Object Addition
+```json
+{
+  "imgUrl": "https://interiors.com/room.jpg", 
+  "remixPrompt": "Add a modern abstract painting on the wall",
+  "canvas": {
+    "width": 1600,
+    "height": 1200
+  },
+  "imgPos": {
+    "width": 1600,
+    "height": 1200,
+    "x": 0,
+    "y": 0
+  },
+  "mask": {
+    "areas": [
+      {
+        "width": 1600,
+        "height": 1200,
+        "points": [600, 300, 1000, 300, 1000, 600, 600, 600]
+      }
+    ]
+  }
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "text": "Add a futuristic holographic interface overlay",
+  "urls": [],
+  "cost": {
+    "feeCost": 140,
+    "relaxCost": 0
+  }
+}
+```
+
+## Key Features
+
+### Canvas Control
+- **Custom Dimensions**: Set precise output dimensions
+- **Image Positioning**: Place source image anywhere on canvas
+- **Scaling**: Resize source image within the canvas
+- **Composition**: Create complex layouts with multiple elements
+
+### Advanced Masking
+- **Polygon Masks**: Define precise geometric areas
+- **Image Masks**: Use custom black/white mask images
+- **Multiple Areas**: Edit several regions simultaneously
+- **Fine Control**: Pixel-perfect mask definition
+
+### Creative Applications
+- **Photo Manipulation**: Professional-level image editing
+- **Concept Art**: Create detailed conceptual artwork
+- **Product Visualization**: Place products in custom environments
+- **Marketing Materials**: Design complex promotional images
+
+## Workflow Tips
+
+1. **Plan Canvas Size**: Consider final output requirements
+2. **Position Strategically**: Place source image for optimal composition
+3. **Mask Precisely**: Use detailed masks for clean edits
+4. **Describe Clearly**: Provide specific prompts for desired changes
+
+## Professional Applications
+
+### Architecture
+- Place buildings in different environments
+- Modify structural elements precisely
+- Create presentation materials
+
+### Product Design
+- Showcase products in various settings
+- Modify specific product features
+- Create marketing visuals
+
+### Creative Industries
+- Concept art development
+- Film pre-visualization
+- Advertising creative development
+
+## Notes
+
+- This is the most advanced editing tool with maximum creative control
+- Supports complex multi-element compositions
+- Ideal for professional-grade image manipulation
+- Processing time may be longer due to complexity
+- Requires careful planning of canvas, positioning, and masking parameters

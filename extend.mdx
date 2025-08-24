@@ -1,0 +1,84 @@
+---
+title: "Extend"
+description: "Extend images in all directions with outpainting"
+---
+
+# Extend
+
+Extend existing images in all directions using outpainting to expand the visual content beyond the original boundaries.
+
+## Endpoint
+
+```
+POST /v1/tob/outpaint
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | ID of the original image generation task |
+| `imageNo` | integer | Yes | Image number to extend (0/1/2/3) |
+| `scale` | float | Yes | Extension scale ratio (1.1-2.0) |
+| `remixPrompt` | string | No | Text prompt for the extended areas (1-8192 characters) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Parameters Detail
+
+### Scale Parameter
+The `scale` parameter defines how much larger the final image will be compared to the original:
+
+- **Range**: 1.1 to 2.0
+- **Example**: For a 1:1 aspect ratio image:
+  - `scale = 1.2` means the original image will occupy 83% of the new image (20% extension)
+  - `scale = 2.0` means the original image will occupy 50% of the new image (100% extension)
+
+## Example Request
+
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "scale": 1.5,
+  "remixPrompt": "Continue the landscape with rolling hills and distant mountains"
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "text": "Continue the landscape with rolling hills and distant mountains",
+  "urls": [],
+  "cost": {
+    "feeCost": 120,
+    "relaxCost": 0
+  }
+}
+```
+
+## Use Cases
+
+- **Landscape Extension**: Expand scenic views with additional terrain
+- **Portrait Backgrounds**: Add more background context around subjects
+- **Architectural Views**: Extend building views to show more surroundings
+- **Artistic Compositions**: Expand artwork to different aspect ratios
+
+## Notes
+
+- The extension happens in all directions uniformly
+- The AI will attempt to maintain visual coherence with the original image
+- Use descriptive prompts to guide what should appear in the extended areas
+- Higher scale values require more processing time and resources
+- The original image will be centered in the final extended result

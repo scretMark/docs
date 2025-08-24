@@ -1,0 +1,106 @@
+---
+title: "Regional Repaint"
+description: "Repaint specific regions of an existing image"
+---
+
+# Regional Repaint
+
+Repaint or modify specific regions within an existing generated image using mask-based editing.
+
+## Endpoint
+
+```
+POST /v1/tob/inpaint
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | ID of the original image generation task |
+| `imageNo` | integer | Yes | Image number to edit (0/1/2/3) |
+| `mask` | [Mask](#mask) | Yes | Regions to repaint |
+| `remixPrompt` | string | No | Text prompt for the repaint area (1-8192 characters) |
+| `area` | [Polygon](#polygon) | No | Single polygon area to repaint (deprecated, use mask instead) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Data Types
+
+### Mask
+Choose one of the following methods to define the repaint area:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `areas` | [Polygon](#polygon)[] | Array of polygonal areas to repaint |
+| `url` | string | Black and white mask image URL (white areas will be repainted) |
+
+### Polygon
+| Field | Type | Description |
+|-------|------|-------------|
+| `width` | integer | Image width in pixels (500-4096) |
+| `height` | integer | Image height in pixels (500-4096) |
+| `points` | integer[] | Polygon coordinates in XYXY format, clockwise from top-left |
+
+## Example Request
+
+### Using Polygon Areas
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "remixPrompt": "Replace with a blooming flower",
+  "mask": {
+    "areas": [
+      {
+        "width": 1024,
+        "height": 1024,
+        "points": [200, 200, 400, 200, 400, 400, 200, 400]
+      }
+    ]
+  }
+}
+```
+
+### Using Mask Image
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "remixPrompt": "Add autumn leaves",
+  "mask": {
+    "url": "https://example.com/mask-image.png"
+  }
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "text": "Replace with a blooming flower",
+  "urls": [],
+  "cost": {
+    "feeCost": 80,
+    "relaxCost": 0
+  }
+}
+```
+
+## Notes
+
+- **Mask Image**: Use a black and white image where white areas indicate regions to be repainted
+- **Multiple Areas**: The `areas` array supports multiple polygonal regions for complex edits
+- **Coordinate System**: Polygon points use the top-left corner as origin (0,0)
+- **Precision**: Define polygon points carefully to target the exact areas you want to modify
+- The original image content in masked areas will be replaced based on the remix prompt

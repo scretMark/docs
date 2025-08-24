@@ -1,0 +1,105 @@
+---
+title: "Remix"
+description: "Transform existing images with new prompts"
+---
+
+# Remix
+
+Transform and reimagine existing images using new text prompts while maintaining the overall composition and structure.
+
+## Endpoint
+
+```
+POST /v1/tob/remix
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | ID of the original image generation task |
+| `imageNo` | integer | Yes | Image number to remix (0/1/2/3) |
+| `remixPrompt` | string | Yes | New text prompt for transformation (1-8192 characters) |
+| `mode` | integer | No | Remix intensity mode (0 or 1, default: 0) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Remix Modes
+
+| Mode | Type | Description |
+|------|------|-------------|
+| 0 | Strong | Dramatic transformation with significant changes |
+| 1 | Subtle | Minor adjustments while preserving most original elements |
+
+## Example Requests
+
+### Strong Remix
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "remixPrompt": "Transform into a cyberpunk cityscape at night with neon lights",
+  "mode": 0
+}
+```
+
+### Subtle Remix
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "remixPrompt": "Change the time of day to golden hour sunset",
+  "mode": 1
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "text": "Transform into a cyberpunk cityscape at night with neon lights",
+  "urls": [],
+  "cost": {
+    "feeCost": 90,
+    "relaxCost": 0
+  }
+}
+```
+
+## Use Cases
+
+### Strong Mode (0)
+- **Style Transfer**: Change artistic style completely (realistic to cartoon, modern to medieval)
+- **Theme Transformation**: Convert subjects entirely (forest to city, day to night)
+- **Genre Shifts**: Transform mood and atmosphere dramatically
+
+### Subtle Mode (1)
+- **Lighting Adjustments**: Modify time of day or lighting conditions
+- **Color Corrections**: Adjust color palette or saturation
+- **Minor Details**: Add or remove small elements while preserving composition
+- **Weather Changes**: Modify atmospheric conditions
+
+## Tips for Best Results
+
+1. **Be Specific**: Detailed prompts yield more predictable results
+2. **Consider Original Content**: The AI uses the original image as a foundation
+3. **Mode Selection**: Choose mode based on desired transformation intensity
+4. **Iterative Process**: Use multiple remix operations for complex transformations
+
+## Notes
+
+- The original composition and structure are generally preserved
+- Strong mode allows for more creative freedom but may deviate significantly from the source
+- Subtle mode maintains closer fidelity to the original image
+- Processing time may vary based on the complexity of the transformation
+- The AI attempts to maintain logical consistency in the remixed result

@@ -1,0 +1,127 @@
+---
+title: "Pan Extend"
+description: "Extend images in a single direction"
+---
+
+# Pan Extend
+
+Extend existing images in a single specified direction, allowing for precise directional expansion of your content.
+
+## Endpoint
+
+```
+POST /v1/tob/pan
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | ID of the original image generation task |
+| `imageNo` | integer | Yes | Image number to extend (0/1/2/3) |
+| `direction` | integer | Yes | Extension direction (0-3) |
+| `scale` | float | Yes | Extension scale ratio (1.1-3.0) |
+| `remixPrompt` | string | No | Text prompt for the extended area (1-8192 characters) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Direction Values
+
+| Value | Direction |
+|-------|-----------|
+| 0 | Down |
+| 1 | Right |
+| 2 | Up |
+| 3 | Left |
+
+## Scale Parameter
+
+The `scale` parameter defines the ratio of the new image area to the original in the extension direction:
+
+- **Range**: 1.1 to 3.0
+- **Example**: For a 1:1 aspect ratio image extending right by 13%:
+  - `scale = 1.13` means the final image will be 13% wider in the specified direction
+
+## Example Requests
+
+### Extend Down
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "direction": 0,
+  "scale": 1.5,
+  "remixPrompt": "Add a reflecting pool at the bottom"
+}
+```
+
+### Extend Right
+```json
+{
+  "jobId": "job_12345", 
+  "imageNo": 0,
+  "direction": 1,
+  "scale": 1.3,
+  "remixPrompt": "Continue the forest path to the right"
+}
+```
+
+### Extend Up
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0, 
+  "direction": 2,
+  "scale": 2.0,
+  "remixPrompt": "Add dramatic storm clouds above"
+}
+```
+
+### Extend Left
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "direction": 3,
+  "scale": 1.2,
+  "remixPrompt": "Show more of the ancient ruins on the left"
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_67890",
+  "status": 0,
+  "text": "Add a reflecting pool at the bottom",
+  "urls": [],
+  "cost": {
+    "feeCost": 100,
+    "relaxCost": 0
+  }
+}
+```
+
+## Use Cases
+
+- **Vertical Extensions**: Add sky or ground elements
+- **Horizontal Extensions**: Expand landscapes or architectural views
+- **Aspect Ratio Adjustments**: Convert between different aspect ratios
+- **Composition Improvements**: Add breathing room or additional context
+
+## Notes
+
+- Unlike outpaint which extends in all directions, pan extends in only one direction
+- Higher scale values allow for more dramatic extensions
+- The AI maintains visual continuity with the original image
+- Use descriptive prompts to guide the content of the extended area
+- Perfect for creating panoramic or cinematic aspect ratios
