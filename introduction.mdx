@@ -1,0 +1,128 @@
+---
+title: "Introduction"
+description: "Youchuan AI API Documentation - Powerful AI image generation and editing capabilities"
+---
+
+# Youchuan AI API
+
+Welcome to the Youchuan AI API documentation. Our comprehensive suite of AI-powered image generation and editing tools enables you to create, modify, and enhance images with cutting-edge artificial intelligence.
+
+## Getting Started
+
+The Youchuan AI API provides powerful image generation and manipulation capabilities through simple REST endpoints. All requests require proper authentication using your API credentials.
+
+### Authentication
+
+All API requests require the following headers:
+
+- `x-youchuan-app`: Your application identifier
+- `x-youchuan-secret`: Your secret key
+
+## Image Generation & Editing
+
+Our API offers a complete toolkit for image creation and manipulation:
+
+### Core Features
+
+<CardGroup cols={2}>
+  <Card title="Text to Image" icon="wand-magic-sparkles" href="/text-to-image">
+    Generate high-quality images from text descriptions using advanced AI models.
+  </Card>
+  
+  <Card title="Image Editing" icon="paintbrush" href="/edit">
+    Edit and repaint specific areas of existing images with precision control.
+  </Card>
+  
+  <Card title="Regional Repaint" icon="brush" href="/regional-repaint">
+    Selectively modify regions using masks and targeted prompts.
+  </Card>
+  
+  <Card title="Background Removal" icon="eraser" href="/background-removal">
+    Automatically remove backgrounds to create clean cutouts.
+  </Card>
+</CardGroup>
+
+### Enhancement Tools
+
+<CardGroup cols={2}>
+  <Card title="Upscale" icon="expand" href="/upscale">
+    Enhance image resolution and quality with AI upscaling technology.
+  </Card>
+  
+  <Card title="Enhance" icon="sparkles" href="/enhance">
+    Improve image quality, clarity, and detail at current resolution.
+  </Card>
+  
+  <Card title="Variation" icon="shuffle" href="/variation">
+    Create controllable variations while maintaining composition structure.
+  </Card>
+  
+  <Card title="Remix" icon="palette" href="/remix">
+    Transform images with new prompts and controllable intensity.
+  </Card>
+</CardGroup>
+
+### Advanced Operations
+
+<CardGroup cols={2}>
+  <Card title="Extend" icon="arrows-expand" href="/extend">
+    Expand images in all directions using intelligent outpainting.
+  </Card>
+  
+  <Card title="Pan Extend" icon="arrow-right" href="/pan-extend">
+    Extend images in a single specified direction with precision.
+  </Card>
+  
+  <Card title="Retexture" icon="cube" href="/retexture">
+    Transform materials and textures with AI-powered style transfer.
+  </Card>
+  
+  <Card title="Advanced Edit" icon="layer-group" href="/advanced-edit">
+    Complex editing with custom canvas positioning and masks.
+  </Card>
+</CardGroup>
+
+### Utility Functions
+
+<CardGroup cols={2}>
+  <Card title="Reroll" icon="rotate" href="/reroll">
+    Re-execute tasks to generate new variations with same parameters.
+  </Card>
+</CardGroup>
+
+## API Base URL
+
+```
+https://ali.youchuan.cn
+```
+
+## Quick Start Example
+
+Generate your first image with a simple API call:
+
+```bash
+curl -X POST "https://ali.youchuan.cn/v1/tob/diffusion" \
+  -H "x-youchuan-app: YOUR_APP_ID" \
+  -H "x-youchuan-secret: YOUR_SECRET_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "A beautiful sunset over mountains with vibrant colors"
+  }'
+```
+
+## Response Format
+
+All endpoints return a Job object containing:
+
+- `id`: Unique job identifier
+- `status`: Processing status (0: created, 1: processing, 2: completed, 3: failed)
+- `urls`: Array of result image URLs (populated when completed)
+- `cost`: Credit consumption details
+
+## Need Help?
+
+- Check our comprehensive endpoint documentation for detailed parameters and examples
+- Review the status codes section for error handling
+- Use callback URLs for asynchronous processing notifications
+
+Start exploring our powerful image generation capabilities with the endpoints listed above!

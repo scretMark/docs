@@ -1,16 +1,31 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Youchuan AI API",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/icon/favicon.svg",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/icon/favicon.svg",
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:support@youchuan.cn"
+    }
+  ],
   "navigation": [
     {
-      "group": "Image",
+      "group": "Getting Started",
+      "pages": [
+        "introduction"
+      ]
+    },
+    {
+      "group": "Image Generation & Editing",
       "pages": [
         "text-to-image",
         "edit",
@@ -27,4 +42,7 @@
         "enhance"
       ]
     }
-  ]
+  ],
+  "footerSocials": {
+    "website": "https://youchuan.cn"
+  }
