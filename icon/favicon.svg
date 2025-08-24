@@ -1,0 +1,10 @@
+<svg width="170" height="171" viewBox="0 0 170 171" xmlns="http://www.w3.org/2000/svg">
+  <!-- legnext minimal geometric mark: rounded octagonal ring -->
+  <polygon
+    points="149.7,58.7 111.8,20.8 58.2,20.8 20.3,58.7 20.3,112.3 58.2,150.2 111.8,150.2 149.7,112.3"
+    fill="none"
+    stroke="white"
+    stroke-width="22"
+    stroke-linejoin="round"
+    stroke-linecap="round"/>
+</svg>
