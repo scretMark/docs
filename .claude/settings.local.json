@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\legnext\\youchuan_docs/**)"
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\legnext\\youchuan_docs/**)",
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\legnext-s-2/**)",
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\legnext-s-2/**)",
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\legnext-s-2/**)",
+      "Bash(copy:*)",
+      "Read(/C:\\c\\Users\\AIO\\Desktop\\CODE/**)",
+      "Read(/C:\\c\\Users\\AIO\\Desktop\\CODE/**)",
+      "Read(/C:\\c\\Users\\AIO\\Desktop\\CODE/**)",
+      "Read(/C:\\c\\Users\\AIO\\Desktop\\CODE/**)",
+      "Read(/C:\\c\\Users\\AIO\\Desktop\\CODE/**)"
     ],
     "deny": [],
     "ask": []
