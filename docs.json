@@ -1,6 +1,8 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "name": "Youchuan AI API",
+  "theme": "mint",
+  "indexPage": "introduction",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
