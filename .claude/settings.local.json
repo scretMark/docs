@@ -12,7 +12,12 @@
       "Read(/C:\\c\\Users\\AIO\\Desktop\\CODE/**)",
       "Read(/C:\\c\\Users\\AIO\\Desktop\\CODE/**)",
       "Read(/C:\\Users\\AIO\\Desktop\\CODE\\leggie-legnext-origin\\docs/**)",
-      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\leggie-legnext-origin\\docs/**)"
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\leggie-legnext-origin\\docs/**)",
+      "WebFetch(domain:tob.youchuan.cn)",
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\resources/**)",
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\resources/**)",
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\legnext-s\\youchuan/**)",
+      "Read(/C:\\Users\\AIO\\Desktop\\CODE\\legnext-s\\youchuan/**)"
     ],
     "deny": [],
     "ask": []

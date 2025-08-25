@@ -1,0 +1,105 @@
+---
+title: "Video Generation"
+description: "Generate videos from text prompts or images using AI"
+---
+
+# Video Generation
+
+Generate high-quality videos from text descriptions or existing images using the Youchuan AI video generation capabilities.
+
+## Endpoint
+
+```
+POST /v1/tob/video-diffusion
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Request Body
+
+Choose one of two generation modes:
+
+### Text-to-Video Mode
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `prompt` | string | Yes | Video generation prompt text (1-8192 characters) |
+| `videoType` | integer | No | Video quality type (0: 480p, 1: 720p) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+### Image-to-Video Mode
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | ID of the source image generation task |
+| `imageNo` | integer | Yes | Image number to animate (0/1/2/3) |
+| `videoType` | integer | No | Video quality type (0: 480p, 1: 720p) |
+| `callback` | string | No | Callback URL for task completion notifications |
+
+## Video Types
+
+| Value | Resolution | Description |
+|-------|------------|-------------|
+| 0 | 480p | Standard definition (default) |
+| 1 | 720p | High definition |
+
+## Example Requests
+
+### Text-to-Video
+```json
+{
+  "prompt": "A serene lake with gentle waves, birds flying overhead, golden hour lighting",
+  "videoType": 1,
+  "callback": "https://your-domain.com/webhook"
+}
+```
+
+### Image-to-Video
+```json
+{
+  "jobId": "job_12345",
+  "imageNo": 0,
+  "videoType": 1,
+  "callback": "https://your-domain.com/webhook"
+}
+```
+
+## Response
+
+Returns a [Job object](/api/schemas/job) containing the task information.
+
+```json
+{
+  "id": "job_video_67890",
+  "status": 0,
+  "text": "A serene lake with gentle waves, birds flying overhead, golden hour lighting",
+  "urls": [],
+  "cost": {
+    "feeCost": 300,
+    "relaxCost": 0
+  }
+}
+```
+
+## Status Codes
+
+| Code | Description |
+|------|-------------|
+| 200 | Success |
+| 400 | Invalid prompt parameter |
+| 401 | Invalid app identifier |
+| 402 | Insufficient account balance |
+| 403 | Prompt contains sensitive content |
+| 429 | Maximum concurrent limit reached |
+| 500 | Internal server error |
+
+## Notes
+
+- **Processing Time**: Video generation typically takes longer than image generation
+- **Quality vs Speed**: Higher resolution videos require more processing time
+- **Content Guidelines**: Ensure prompts comply with content policy guidelines
+- **File Format**: Generated videos are typically provided in MP4 format
+- Use the callback URL for efficient notification of completion rather than polling

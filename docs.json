@@ -46,6 +46,20 @@
               "variation",
               "enhance"
             ]
+          },
+          {
+            "group": "Video Generation",
+            "pages": [
+              "video-generation",
+              "video-extend"
+            ]
+          },
+          {
+            "group": "Account & Job Management",
+            "pages": [
+              "account-info",
+              "job-status"
+            ]
           }
         ]
       }

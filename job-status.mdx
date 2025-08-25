@@ -1,0 +1,151 @@
+---
+title: "Job Status"
+description: "Query the status and results of generation tasks"
+---
+
+# Job Status
+
+Retrieve the current status and results of any generation task using its job ID.
+
+## Endpoint
+
+```
+GET /v1/tob/job/{jobId}
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `jobId` | string | Yes | The unique job identifier |
+
+## Response
+
+```json
+{
+  "id": "job_12345",
+  "status": 2,
+  "text": "A beautiful sunset over mountains with vibrant colors",
+  "urls": [
+    "https://cdn.youchuan.cn/images/job_12345_0.png",
+    "https://cdn.youchuan.cn/images/job_12345_1.png",
+    "https://cdn.youchuan.cn/images/job_12345_2.png",
+    "https://cdn.youchuan.cn/images/job_12345_3.png"
+  ],
+  "audits": ["", "", "", ""],
+  "seed": 1234567890,
+  "comment": "Generation completed successfully",
+  "cost": {
+    "jobId": "job_12345",
+    "costAt": "2024-01-15T14:30:00Z",
+    "feeCost": 100.0,
+    "fastCost": 1.0,
+    "relaxCost": 0.0
+  }
+}
+```
+
+## Job Status Values
+
+| Status | Description | Next Steps |
+|--------|-------------|------------|
+| 0 | **Created** - Job has been created and queued | Wait for processing to begin |
+| 1 | **Processing** - Job is currently being executed | Continue polling or wait for callback |
+| 2 | **Completed** - Job finished successfully | Results available in `urls` array |
+| 3 | **Failed** - Job encountered an error | Check `comment` for error details |
+
+## Response Fields
+
+### Core Information
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique job identifier |
+| `status` | integer | Current job status (0-3) |
+| `text` | string | Original prompt or description |
+| `comment` | string | Additional status information or error details |
+| `seed` | integer | Random seed used for generation (if applicable) |
+
+### Results
+| Field | Type | Description |
+|-------|------|-------------|
+| `urls` | string[] | Array of result URLs (empty if not completed) |
+| `audits` | string[] | Content audit results corresponding to each URL |
+
+### Cost Information
+| Field | Type | Description |
+|-------|------|-------------|
+| `cost.jobId` | string | Job identifier |
+| `cost.costAt` | string | Timestamp when cost was calculated |
+| `cost.feeCost` | number | Total fee cost in cents |
+| `cost.fastCost` | number | Fast mode task count consumed |
+| `cost.relaxCost` | number | Relax mode task count consumed |
+
+## Example Requests
+
+### Basic Status Check
+```bash
+curl -X GET "https://ali.youchuan.cn/v1/tob/job/job_12345" \
+  -H "x-youchuan-app: YOUR_APP_ID" \
+  -H "x-youchuan-secret: YOUR_SECRET_KEY"
+```
+
+### Using JavaScript
+```javascript
+const response = await fetch('https://ali.youchuan.cn/v1/tob/job/job_12345', {
+  headers: {
+    'x-youchuan-app': 'YOUR_APP_ID',
+    'x-youchuan-secret': 'YOUR_SECRET_KEY'
+  }
+});
+
+const job = await response.json();
+console.log(`Job status: ${job.status}`);
+
+if (job.status === 2) {
+  console.log(`Results: ${job.urls.length} images generated`);
+}
+```
+
+## Content Moderation
+
+The `audits` array contains content moderation results:
+
+- **Empty string (`""`)**: Content passed moderation
+- **Non-empty string**: Content failed moderation, contains reason
+- **Corresponding URLs**: If audit failed, the corresponding URL in `urls` may be empty
+
+## Polling Best Practices
+
+### Recommended Polling Intervals
+- **First 30 seconds**: Poll every 2-3 seconds
+- **After 30 seconds**: Poll every 5-10 seconds
+- **After 2 minutes**: Poll every 15-30 seconds
+
+### Alternative: Use Callbacks
+Instead of polling, provide a `callback` URL in your original request for automatic notifications.
+
+## Error Handling
+
+```javascript
+if (job.status === 3) {
+  console.error(`Job failed: ${job.comment}`);
+  // Handle failure case
+} else if (job.status === 2 && job.urls.length === 0) {
+  console.warn('Job completed but no results available');
+  // Check audits array for moderation issues
+}
+```
+
+## Notes
+
+- **Job Retention**: Completed jobs and their results are retained for 30 days
+- **Multiple Results**: Image generation typically produces 4 variations
+- **Video Results**: Video jobs return video file URLs instead of image URLs
+- **Download Window**: Result URLs are accessible for 30 days after completion

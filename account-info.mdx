@@ -1,0 +1,110 @@
+---
+title: "Account Information"
+description: "Retrieve current account subscription and usage details"
+---
+
+# Account Information
+
+Get detailed information about your current account subscription, balance, and usage limits.
+
+## Endpoint
+
+```
+GET /v1/tob/subscribe
+```
+
+## Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `x-youchuan-secret` | string | Yes | Your Youchuan secret key |
+| `x-youchuan-app` | string | Yes | Your Youchuan app identifier |
+
+## Response
+
+```json
+{
+  "currentAvail": 1500.50,
+  "shouldChargeAt": "2024-02-15T10:30:00Z",
+  "curTermPlan": {
+    "id": "plan_pro",
+    "name": "Professional Plan",
+    "fastConcurrentNum": 5,
+    "relaxConcurrentNum": 10,
+    "fastLimit": 1000,
+    "relaxLimit": -1,
+    "fastPerCost": 10,
+    "relaxPerCost": 0,
+    "minCost": 5000,
+    "details": [
+      "Unlimited relax mode generations",
+      "5 concurrent fast mode tasks",
+      "Priority queue access"
+    ]
+  },
+  "curTermCost": {
+    "startAt": "2024-01-15T00:00:00Z",
+    "endAt": "2024-02-15T00:00:00Z",
+    "pkgFee": 2500.00,
+    "extraFee": 150.25
+  },
+  "nextTermPlan": {
+    "id": "plan_pro",
+    "name": "Professional Plan"
+  }
+}
+```
+
+## Response Fields
+
+### Account Balance
+| Field | Type | Description |
+|-------|------|-------------|
+| `currentAvail` | number | Current available balance in cents |
+| `shouldChargeAt` | string | Estimated next charge time (ISO 8601 format) |
+
+### Current Plan (`curTermPlan`)
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique plan identifier |
+| `name` | string | Plan display name |
+| `fastConcurrentNum` | integer | Maximum concurrent fast mode tasks |
+| `relaxConcurrentNum` | integer | Maximum concurrent relax mode tasks |
+| `fastLimit` | integer | Fast mode task limit per billing cycle |
+| `relaxLimit` | integer | Relax mode task limit (-1 = unlimited) |
+| `fastPerCost` | integer | Cost per fast mode task (cents) |
+| `relaxPerCost` | integer | Cost per relax mode task (cents) |
+| `minCost` | integer | Minimum monthly charge (cents) |
+| `details` | string[] | Additional plan features |
+
+### Current Term Costs (`curTermCost`)
+| Field | Type | Description |
+|-------|------|-------------|
+| `startAt` | string | Billing period start date |
+| `endAt` | string | Billing period end date |
+| `pkgFee` | number | In-plan consumption costs (cents) |
+| `extraFee` | number | Out-of-plan consumption costs (cents) |
+
+## Example Request
+
+```bash
+curl -X GET "https://ali.youchuan.cn/v1/tob/subscribe" \
+  -H "x-youchuan-app: YOUR_APP_ID" \
+  -H "x-youchuan-secret: YOUR_SECRET_KEY"
+```
+
+## Use Cases
+
+- **Balance Monitoring**: Check available credits before starting large batch jobs
+- **Usage Planning**: Understand your current plan limits and consumption
+- **Billing Insights**: Track spending within and outside your plan
+- **Plan Optimization**: Evaluate if your current plan meets your usage patterns
+- **Automated Alerts**: Set up notifications when balance gets low
+
+## Notes
+
+- **Real-time Data**: Information reflects the most current account state
+- **Billing Cycles**: Plans operate on monthly billing cycles
+- **Cost Tracking**: Costs are tracked in cents for precision
+- **Plan Changes**: Next term plan shows any scheduled plan modifications
+- **Rate Limiting**: This endpoint has standard rate limiting applied
